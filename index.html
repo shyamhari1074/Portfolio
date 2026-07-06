@@ -1,4 +1,5 @@
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
@@ -120,6 +121,17 @@ canvas#starfield{position:absolute;top:0;left:0;width:100%;height:100%;pointer-e
 
 .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease}
 .revealed{opacity:1;transform:translateY(0)}
+@media (max-width:720px){
+  .hero{padding:2rem 1rem 1.5rem}
+  .hero-split{flex-direction:column;align-items:flex-start}
+  .hero-desc{max-width:100%;margin-bottom:1rem}
+  .hero-name{font-size:clamp(34px,10vw,56px)}
+  .about-grid{grid-template-columns:1fr}
+  .proj-grid{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:1fr 1fr}
+  .svc-grid{grid-template-columns:1fr}
+  .contact-block{grid-template-columns:1fr}
+}
 </style>
 
 <h2 class="sr-only">Shyam Hari — ML Engineer and Data Scientist portfolio with projects, skills, and contact information</h2>
@@ -141,8 +153,9 @@ canvas#starfield{position:absolute;top:0;left:0;width:100%;height:100%;pointer-e
       I build <em>end-to-end ML systems</em> — from raw data to production. Reinforcement learning, multi-agent AI, and LLM pipelines that actually ship.
     </p>
     <div class="hero-ctas">
-      <button class="btn-primary"><i class="ti ti-download" aria-hidden="true"></i> Download CV</button>
-      <button class="btn-ghost"><i class="ti ti-brand-github" aria-hidden="true"></i> GitHub</button>
+      <a href="cv/resume.html" class="btn-primary" download><i class="ti ti-download" aria-hidden="true"></i> Download CV</a>
+      <a href="cv/resume.html" class="btn-ghost" target="_blank" rel="noopener"><i class="ti ti-file-text" aria-hidden="true"></i> View CV</a>
+      <button class="btn-ghost" onclick="window.open('https://github.com/shyamhari1074','_blank')"><i class="ti ti-brand-github" aria-hidden="true"></i> GitHub</button>
     </div>
   </div>
 </section>
