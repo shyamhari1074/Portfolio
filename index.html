@@ -1,464 +1,315 @@
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#080810;
-  --surface:#0e0e1a;
-  --card:#13131f;
-  --border:#1e1e30;
-  --accent:#6c63ff;
-  --accent2:#a78bfa;
-  --cyan:#22d3ee;
-  --white:#f0f0ff;
-  --muted:#6b6b8a;
-  --faint:#2a2a3d;
-}
-body{background:var(--bg)}
-.wrap{background:var(--bg);font-family:'Space Grotesk',sans-serif;color:var(--white);width:100%;overflow-x:hidden}
-
-canvas#starfield{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
-
-.hero{position:relative;min-height:480px;display:flex;flex-direction:column;justify-content:flex-end;padding:3rem 2.5rem 2.5rem;overflow:hidden;background:var(--bg)}
-.hero-badge{position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;background:rgba(108,99,255,0.12);border:1px solid rgba(108,99,255,0.3);padding:5px 14px;border-radius:100px;margin-bottom:1.5rem;width:fit-content}
-.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite}
-.hero-badge-text{font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:0.08em}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
-
-.hero-name{position:relative;z-index:2;font-size:clamp(52px,9vw,80px);font-weight:700;line-height:0.95;letter-spacing:-0.03em;color:var(--white)}
-.hero-name .line2{color:transparent;-webkit-text-stroke:1px rgba(108,99,255,0.6)}
-.hero-split{position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;margin-top:2rem;gap:2rem}
-.hero-desc{max-width:340px;font-size:14px;color:var(--muted);line-height:1.7;font-weight:300}
-.hero-desc em{color:var(--accent2);font-style:normal;font-weight:500}
-.hero-ctas{display:flex;gap:12px;flex-shrink:0}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;padding:10px 20px;border-radius:8px;border:none;cursor:pointer;letter-spacing:0.02em;transition:background 0.2s}
-.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--muted);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500;padding:10px 20px;border-radius:8px;border:1px solid var(--border);cursor:pointer;letter-spacing:0.02em;transition:border-color 0.2s,color 0.2s}
-
-.scroll-ticker{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);padding:10px 0}
-.ticker-inner{display:flex;gap:0;animation:ticker 18s linear infinite;width:max-content}
-.ticker-item{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.1em;padding:0 2rem;white-space:nowrap}
-.ticker-item span{color:var(--accent2)}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-.section{padding:3rem 2.5rem;border-top:1px solid var(--border)}
-.sec-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.2rem;display:flex;align-items:center;gap:10px}
-.sec-label::after{content:'';flex:1;height:1px;background:var(--faint)}
-.sec-title{font-size:clamp(28px,5vw,42px);font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:var(--white)}
-.sec-title em{color:var(--accent);font-style:normal}
-
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem}
-.about-text{font-size:15px;color:#9090aa;line-height:1.8;font-weight:300}
-.about-text strong{color:var(--white);font-weight:500}
-.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:1.5rem}
-.stat-cell{background:var(--card);padding:1.25rem;display:flex;flex-direction:column;gap:4px}
-.stat-n{font-size:32px;font-weight:700;color:var(--white);letter-spacing:-0.03em;line-height:1}
-.stat-l{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:0.08em;text-transform:uppercase}
-
-.skills-cloud{display:flex;flex-wrap:wrap;gap:8px;margin-top:1.5rem}
-.skill-chip{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;letter-spacing:0.04em;cursor:default;transition:all 0.2s;border:1px solid transparent}
-.chip-ml{background:rgba(108,99,255,0.1);color:#a78bfa;border-color:rgba(108,99,255,0.25)}
-.chip-data{background:rgba(34,211,238,0.08);color:#67e8f9;border-color:rgba(34,211,238,0.2)}
-.chip-llm{background:rgba(52,211,153,0.08);color:#6ee7b7;border-color:rgba(52,211,153,0.2)}
-.chip-deploy{background:rgba(251,191,36,0.08);color:#fcd34d;border-color:rgba(251,191,36,0.2)}
-.chip-lang{background:rgba(248,113,113,0.08);color:#fca5a5;border-color:rgba(248,113,113,0.2)}
-
-.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:2rem}
-.proj-card{background:var(--card);padding:1.75rem;display:flex;flex-direction:column;gap:0.75rem;transition:background 0.2s;cursor:pointer;position:relative;overflow:hidden}
-.proj-card::before{content:'';position:absolute;inset:0;background:rgba(108,99,255,0.04);opacity:0;transition:opacity 0.2s}
-.proj-card:hover{background:#16162a}
-.proj-card:hover::before{opacity:1}
-.proj-idx{font-family:'Space Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:0.15em}
-.proj-name{font-size:16px;font-weight:600;color:var(--white);line-height:1.2}
-.proj-desc{font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;flex:1}
-.proj-tags{display:flex;flex-wrap:wrap;gap:5px}
-.proj-tag{font-size:10px;font-family:'Space Mono',monospace;color:#6b6b8a;background:rgba(255,255,255,0.04);border:1px solid var(--faint);padding:2px 8px;border-radius:4px;letter-spacing:0.04em}
-.proj-link{font-size:11px;color:var(--accent2);letter-spacing:0.06em;display:flex;align-items:center;gap:4px;margin-top:4px;font-weight:500}
-
-.exp-list{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:2rem}
-.exp-row{background:var(--card);display:grid;grid-template-columns:180px 1fr;transition:background 0.2s}
-.exp-row:hover{background:#16162a}
-.exp-meta{padding:1.5rem;border-right:1px solid var(--border)}
-.exp-co{font-size:14px;font-weight:600;color:var(--white)}
-.exp-date{font-family:'Space Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:0.08em;margin-top:4px}
-.exp-badge{display:inline-block;margin-top:8px;font-size:9px;font-family:'Space Mono',monospace;color:#6ee7b7;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);padding:2px 8px;border-radius:4px;letter-spacing:0.08em}
-.exp-content{padding:1.5rem}
-.exp-role{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem}
-.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:6px}
-.exp-bullets li{font-size:12.5px;color:#9090aa;line-height:1.65;padding-left:16px;position:relative;font-weight:300}
-.exp-bullets li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:9px;top:4px}
-
-.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:2rem}
-.svc-card{background:var(--card);padding:2rem;display:flex;flex-direction:column;gap:10px;transition:background 0.2s}
-.svc-card:hover{background:#16162a}
-.svc-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
-.svc-icon-ml{background:rgba(108,99,255,0.15)}
-.svc-icon-data{background:rgba(34,211,238,0.1)}
-.svc-icon-llm{background:rgba(52,211,153,0.1)}
-.svc-icon-full{background:rgba(251,191,36,0.1)}
-.svc-name{font-size:16px;font-weight:600;color:var(--white)}
-.svc-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300}
-
-.contact-block{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:3rem;margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
-.contact-headline{font-size:clamp(28px,5vw,40px);font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:var(--white)}
-.contact-headline span{color:var(--accent)}
-.contact-sub{font-size:13px;color:var(--muted);line-height:1.7;margin-top:0.75rem}
-.contact-items{display:flex;flex-direction:column;gap:1rem}
-.contact-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;transition:border-color 0.2s}
-.contact-item:hover{border-color:rgba(108,99,255,0.4)}
-.contact-item-icon{width:32px;height:32px;border-radius:7px;background:rgba(108,99,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.contact-item-icon i{font-size:15px;color:var(--accent2)}
-.contact-item-label{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase}
-.contact-item-val{font-size:13px;color:var(--white);font-weight:500;margin-top:1px}
-
-.footer-bar{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 2.5rem;border-top:1px solid var(--border);background:var(--bg)}
-.footer-name{font-size:13px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:0.08em}
-.footer-social{display:flex;gap:1rem}
-.footer-social a{font-size:11px;color:var(--muted);text-decoration:none;font-family:'Space Mono',monospace;letter-spacing:0.06em;transition:color 0.2s}
-.footer-social a:hover{color:var(--accent2)}
-
-.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease}
-.revealed{opacity:1;transform:translateY(0)}
-</style>
-
-<h2 class="sr-only">Shyam Hari — ML Engineer and Data Scientist portfolio with projects, skills, and contact information</h2>
-
-<div class="wrap">
-
-<section class="hero">
-  <canvas id="starfield"></canvas>
-  <div class="hero-badge">
-    <span class="hero-badge-dot"></span>
-    <span class="hero-badge-text">open to work — india &amp; remote</span>
-  </div>
-  <h1 class="hero-name">
-    <div>Shyam</div>
-    <div class="line2">Hari.</div>
-  </h1>
-  <div class="hero-split">
-    <p class="hero-desc">
-      I build <em>end-to-end ML systems</em> — from raw data to production. Reinforcement learning, multi-agent AI, and LLM pipelines that actually ship.
-    </p>
-    <div class="hero-ctas">
-      <button class="btn-primary"><i class="ti ti-download" aria-hidden="true"></i> Download CV</button>
-      <button class="btn-ghost"><i class="ti ti-brand-github" aria-hidden="true"></i> GitHub</button>
-    </div>
-  </div>
-</section>
-
-<div class="scroll-ticker">
-  <div class="ticker-inner" id="ticker">
-    <span class="ticker-item">PyTorch <span>·</span></span>
-    <span class="ticker-item">Stable-Baselines3 <span>·</span></span>
-    <span class="ticker-item">LLaMA 3 <span>·</span></span>
-    <span class="ticker-item">FastAPI <span>·</span></span>
-    <span class="ticker-item">Reinforcement Learning <span>·</span></span>
-    <span class="ticker-item">Groq API <span>·</span></span>
-    <span class="ticker-item">HuggingFace <span>·</span></span>
-    <span class="ticker-item">React 19 <span>·</span></span>
-    <span class="ticker-item">Multi-Agent AI <span>·</span></span>
-    <span class="ticker-item">Vercel <span>·</span></span>
-    <span class="ticker-item">Feature Engineering <span>·</span></span>
-    <span class="ticker-item">Scikit-learn <span>·</span></span>
-    <span class="ticker-item">PyTorch <span>·</span></span>
-    <span class="ticker-item">Stable-Baselines3 <span>·</span></span>
-    <span class="ticker-item">LLaMA 3 <span>·</span></span>
-    <span class="ticker-item">FastAPI <span>·</span></span>
-    <span class="ticker-item">Reinforcement Learning <span>·</span></span>
-    <span class="ticker-item">Groq API <span>·</span></span>
-    <span class="ticker-item">HuggingFace <span>·</span></span>
-    <span class="ticker-item">React 19 <span>·</span></span>
-    <span class="ticker-item">Multi-Agent AI <span>·</span></span>
-    <span class="ticker-item">Vercel <span>·</span></span>
-    <span class="ticker-item">Feature Engineering <span>·</span></span>
-    <span class="ticker-item">Scikit-learn <span>·</span></span>
-  </div>
-</div>
-
-<section class="section reveal" id="s-about">
-  <div class="sec-label">001 — About</div>
-  <h2 class="sec-title">I build things that <em>think.</em></h2>
-  <div class="about-grid">
-    <div>
-      <p class="about-text">B.Tech in <strong>AI &amp; Data Science</strong> at SJCET Palai. I don't just train models — I ship them. Every project in my portfolio went from raw data to a <strong>deployed, working product</strong>. Reinforcement learning agents. Multi-agent AI platforms. LLM pipelines. All in production.</p>
-      <p class="about-text" style="margin-top:1rem">I'm looking for a team that moves fast and builds real things. Pathanamthitta, Kerala — open to anywhere.</p>
-    </div>
-    <div>
-      <div class="stat-row">
-        <div class="stat-cell">
-          <div class="stat-n">6+</div>
-          <div class="stat-l">Projects shipped</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Shyam Hari — ML Engineer and Data Scientist portfolio featuring end-to-end ML systems, reinforcement learning, multi-agent AI, and LLM pipelines.">
+  <meta name="theme-color" content="#080810">
+  <title>Shyam Hari — ML Engineer & Data Scientist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧠%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero" role="banner">
+      <canvas id="starfield" aria-hidden="true"></canvas>
+      <div class="hero-content">
+        <div class="hero-badge" aria-label="Currently open to work">
+          <span class="hero-badge-dot" aria-hidden="true"></span>
+          <span class="hero-badge-text">open to work — india & remote</span>
         </div>
-        <div class="stat-cell">
-          <div class="stat-n">~80%</div>
-          <div class="stat-l">RL perf gain</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-n">3</div>
-          <div class="stat-l">AI agents live</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-n">2</div>
-          <div class="stat-l">Industry programs</div>
+        <h1 class="hero-name">
+          <div>Shyam</div>
+          <div class="line2">Hari.</div>
+        </h1>
+        <div class="hero-split">
+          <p class="hero-desc">
+            I build <em>end-to-end ML systems</em> — from raw data to production. Reinforcement learning, multi-agent AI, and LLM pipelines that actually ship.
+          </p>
+          <div class="hero-ctas">
+            <a class="btn-primary" href="/public/resume.pdf" download="Shyam_Hari_Resume.pdf">
+              <i class="ti ti-download" aria-hidden="true"></i> Download CV
+            </a>
+            <a class="btn-ghost" href="https://github.com/shyamhari1074" target="_blank" rel="noopener noreferrer">
+              <i class="ti ti-brand-github" aria-hidden="true"></i> GitHub
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </header>
 
-<section class="section reveal" id="s-skills">
-  <div class="sec-label">002 — Skills</div>
-  <h2 class="sec-title">The <em>stack.</em></h2>
-  <div class="skills-cloud">
-    <span class="skill-chip chip-ml">PyTorch</span>
-    <span class="skill-chip chip-ml">Scikit-learn</span>
-    <span class="skill-chip chip-ml">Stable-Baselines3</span>
-    <span class="skill-chip chip-ml">HuggingFace</span>
-    <span class="skill-chip chip-ml">PPO / RL</span>
-    <span class="skill-chip chip-ml">CNNs</span>
-    <span class="skill-chip chip-data">Pandas</span>
-    <span class="skill-chip chip-data">NumPy</span>
-    <span class="skill-chip chip-data">Feature Engineering</span>
-    <span class="skill-chip chip-data">EDA</span>
-    <span class="skill-chip chip-data">Time-Series</span>
-    <span class="skill-chip chip-data">SQL</span>
-    <span class="skill-chip chip-data">A/B Testing</span>
-    <span class="skill-chip chip-llm">Groq API</span>
-    <span class="skill-chip chip-llm">LLaMA 3</span>
-    <span class="skill-chip chip-llm">Prompt Engineering</span>
-    <span class="skill-chip chip-llm">Multi-Agent Orch.</span>
-    <span class="skill-chip chip-deploy">FastAPI</span>
-    <span class="skill-chip chip-deploy">Streamlit</span>
-    <span class="skill-chip chip-deploy">Vercel</span>
-    <span class="skill-chip chip-deploy">SQLAlchemy</span>
-    <span class="skill-chip chip-deploy">React 19</span>
-    <span class="skill-chip chip-lang">Python</span>
-    <span class="skill-chip chip-lang">JavaScript</span>
-    <span class="skill-chip chip-lang">Java</span>
-    <span class="skill-chip chip-lang">Git</span>
-  </div>
-</section>
+    <div class="scroll-ticker" aria-hidden="true">
+      <div class="ticker-inner" id="ticker">
+        <span class="ticker-item">PyTorch <span>·</span></span>
+        <span class="ticker-item">Stable-Baselines3 <span>·</span></span>
+        <span class="ticker-item">LLaMA 3 <span>·</span></span>
+        <span class="ticker-item">FastAPI <span>·</span></span>
+        <span class="ticker-item">Reinforcement Learning <span>·</span></span>
+        <span class="ticker-item">Groq API <span>·</span></span>
+        <span class="ticker-item">HuggingFace <span>·</span></span>
+        <span class="ticker-item">React 19 <span>·</span></span>
+        <span class="ticker-item">Multi-Agent AI <span>·</span></span>
+        <span class="ticker-item">Vercel <span>·</span></span>
+        <span class="ticker-item">Feature Engineering <span>·</span></span>
+        <span class="ticker-item">Scikit-learn <span>·</span></span>
+        <span class="ticker-item">PyTorch <span>·</span></span>
+        <span class="ticker-item">Stable-Baselines3 <span>·</span></span>
+        <span class="ticker-item">LLaMA 3 <span>·</span></span>
+        <span class="ticker-item">FastAPI <span>·</span></span>
+        <span class="ticker-item">Reinforcement Learning <span>·</span></span>
+        <span class="ticker-item">Groq API <span>·</span></span>
+        <span class="ticker-item">HuggingFace <span>·</span></span>
+        <span class="ticker-item">React 19 <span>·</span></span>
+        <span class="ticker-item">Multi-Agent AI <span>·</span></span>
+        <span class="ticker-item">Vercel <span>·</span></span>
+        <span class="ticker-item">Feature Engineering <span>·</span></span>
+        <span class="ticker-item">Scikit-learn <span>·</span></span>
+      </div>
+    </div>
 
-<section class="section reveal" id="s-work">
-  <div class="sec-label">003 — Selected work</div>
-  <h2 class="sec-title">What I've <em>built.</em></h2>
-  <div class="proj-grid">
-    <div class="proj-card">
-      <div class="proj-idx">PROJ — 001</div>
-      <div class="proj-name">LeafNetwork</div>
-      <p class="proj-desc">Multi-agent AI platform for farmers. Vision, Climate and Satellite agents — real-time crop disease detection, live market signals, AI chat. Shipped independently to Vercel.</p>
-      <div class="proj-tags">
-        <span class="proj-tag">React 19</span>
-        <span class="proj-tag">FastAPI</span>
-        <span class="proj-tag">PyTorch</span>
-        <span class="proj-tag">LLaMA 3</span>
-      </div>
-      <a class="proj-link" href="https://github.com/shyamhari1074/The_Leaf_Network">View on GitHub <i class="ti ti-arrow-up-right" aria-hidden="true"></i></a>
-    </div>
-    <div class="proj-card">
-      <div class="proj-idx">PROJ — 002</div>
-      <div class="proj-name">RL Financial Optimiser</div>
-      <p class="proj-desc">PPO agent on financial time-series with custom reward functions and domain-specific state features. Outperformed baseline statistical hedging by ~80%.</p>
-      <div class="proj-tags">
-        <span class="proj-tag">PPO</span>
-        <span class="proj-tag">Stable-Baselines3</span>
-        <span class="proj-tag">Gymnasium</span>
-      </div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-idx">PROJ — 003</div>
-      <div class="proj-name">Segmentation Platform</div>
-      <p class="proj-desc">K-Means clustering across 5 behavioural segments with Logistic Regression churn classifier. Live Streamlit inference dashboard for real-time predictions.</p>
-      <div class="proj-tags">
-        <span class="proj-tag">Scikit-learn</span>
-        <span class="proj-tag">Streamlit</span>
-        <span class="proj-tag">Joblib</span>
-      </div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-idx">PROJ — 004</div>
-      <div class="proj-name">Padik AI</div>
-      <p class="proj-desc">Agentic NLP pipeline transforming raw YouTube transcripts into structured study notes and Q&amp;A pairs via LLaMA 3.1. Zero manual processing post-deployment.</p>
-      <div class="proj-tags">
-        <span class="proj-tag">LLaMA 3.1</span>
-        <span class="proj-tag">Groq API</span>
-        <span class="proj-tag">NLP</span>
-      </div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-idx">PROJ — 005</div>
-      <div class="proj-name">E-commerce Analysis</div>
-      <p class="proj-desc">EDA and Linear Regression on 2,000+ customer records. Surfaced $61.27/$38.59/$25.98 annual spend drivers per unit — coefficient-level business insight.</p>
-      <div class="proj-tags">
-        <span class="proj-tag">Pandas</span>
-        <span class="proj-tag">Scikit-learn</span>
-        <span class="proj-tag">Seaborn</span>
-      </div>
-    </div>
-    <div class="proj-card">
-      <div class="proj-idx">PROJ — 006</div>
-      <div class="proj-name">Neuroevolution Agent</div>
-      <p class="proj-desc">Neural game agent trained via genetic algorithms — gradient-free optimisation, fitness-based selection across generations for real-time decision-making.</p>
-      <div class="proj-tags">
-        <span class="proj-tag">PyTorch</span>
-        <span class="proj-tag">NEAT</span>
-        <span class="proj-tag">Genetic Alg.</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section reveal" id="s-exp">
-  <div class="sec-label">004 — Experience</div>
-  <h2 class="sec-title">Where I've <em>worked.</em></h2>
-  <div class="exp-list">
-    <div class="exp-row">
-      <div class="exp-meta">
-        <div class="exp-co">British Airways</div>
-        <div class="exp-date">Feb 2026</div>
-        <div class="exp-badge">Verified</div>
-      </div>
-      <div class="exp-content">
-        <div class="exp-role">Data Science · Forage</div>
-        <ul class="exp-bullets">
-          <li>Scraped and performed EDA on 1,000+ unstructured customer reviews — surfaced satisfaction drivers across key service dimensions</li>
-          <li>Engineered domain-specific features, trained booking-behaviour classifier, delivered results in executive-facing presentation</li>
-        </ul>
-      </div>
-    </div>
-    <div class="exp-row">
-      <div class="exp-meta">
-        <div class="exp-co">Commonwealth Bank</div>
-        <div class="exp-date">Feb 2025</div>
-        <div class="exp-badge">Verified</div>
-      </div>
-      <div class="exp-content">
-        <div class="exp-role">Intro to Data Science · Forage</div>
-        <ul class="exp-bullets">
-          <li>Designed end-to-end Python and SQL pipelines for ingestion, cleaning and transformation of large-scale structured financial datasets</li>
-          <li>Applied anonymisation to sensitive customer records; designed relational schemas for dashboard-ready analytical output</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section reveal" id="s-svc">
-  <div class="sec-label">005 — Services</div>
-  <h2 class="sec-title">What I can do <em>for you.</em></h2>
-  <div class="svc-grid">
-    <div class="svc-card">
-      <div class="svc-icon svc-icon-ml"><i class="ti ti-brain" aria-hidden="true" style="color:#a78bfa;font-size:18px"></i></div>
-      <div class="svc-name">ML model development</div>
-      <p class="svc-desc">End-to-end pipelines — data prep, training, evaluation, serialised deployment-ready models. Classification, regression, clustering, reinforcement learning.</p>
-    </div>
-    <div class="svc-card">
-      <div class="svc-icon svc-icon-data"><i class="ti ti-chart-bar" aria-hidden="true" style="color:#67e8f9;font-size:18px"></i></div>
-      <div class="svc-name">Data analysis and dashboards</div>
-      <p class="svc-desc">EDA, feature analysis, interactive Streamlit and Plotly dashboards. Stakeholder-ready insight from raw data.</p>
-    </div>
-    <div class="svc-card">
-      <div class="svc-icon svc-icon-llm"><i class="ti ti-robot" aria-hidden="true" style="color:#6ee7b7;font-size:18px"></i></div>
-      <div class="svc-name">LLM and AI pipelines</div>
-      <p class="svc-desc">Prompt engineering, multi-agent orchestration, unstructured-to-structured pipelines using LLaMA 3 and Groq API.</p>
-    </div>
-    <div class="svc-card">
-      <div class="svc-icon svc-icon-full"><i class="ti ti-rocket" aria-hidden="true" style="color:#fcd34d;font-size:18px"></i></div>
-      <div class="svc-name">Full-stack AI apps</div>
-      <p class="svc-desc">FastAPI backends, React frontends, Vercel deployments. Production-ready AI applications built and shipped independently.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section reveal" id="s-contact">
-  <div class="sec-label">006 — Contact</div>
-  <div class="contact-block">
-    <div>
-      <h2 class="contact-headline">Let's build<br><span>something real.</span></h2>
-      <p class="contact-sub">Open to internships, entry-level roles, and select freelance projects. India and remote.</p>
-    </div>
-    <div class="contact-items">
-      <div class="contact-item">
-        <div class="contact-item-icon"><i class="ti ti-mail" aria-hidden="true"></i></div>
-        <div>
-          <div class="contact-item-label">Email</div>
-          <div class="contact-item-val">shyamhwrk@gmail.com</div>
+    <main>
+      <section class="section reveal" id="s-about" aria-labelledby="about-title">
+        <div class="sec-label">001 — About</div>
+        <h2 class="sec-title" id="about-title">I build things that <em>think.</em></h2>
+        <div class="about-grid">
+          <div class="about-text-content">
+            <p class="about-text">B.Tech in <strong>AI & Data Science</strong> at SJCET Palai. I don't just train models — I ship them. Every project in my portfolio went from raw data to a <strong>deployed, working product</strong>. Reinforcement learning agents. Multi-agent AI platforms. LLM pipelines. All in production.</p>
+            <p class="about-text" style="margin-top:1rem">I'm looking for a team that moves fast and builds real things. Pathanamthitta, Kerala — open to anywhere.</p>
+          </div>
+          <div class="about-stats">
+            <div class="stat-row" role="list" aria-label="Key statistics">
+              <div class="stat-cell" role="listitem">
+                <div class="stat-n">6+</div>
+                <div class="stat-l">Projects shipped</div>
+              </div>
+              <div class="stat-cell" role="listitem">
+                <div class="stat-n">~80%</div>
+                <div class="stat-l">RL perf gain</div>
+              </div>
+              <div class="stat-cell" role="listitem">
+                <div class="stat-n">3</div>
+                <div class="stat-l">AI agents live</div>
+              </div>
+              <div class="stat-cell" role="listitem">
+                <div class="stat-n">2</div>
+                <div class="stat-l">Industry programs</div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="contact-item">
-        <div class="contact-item-icon"><i class="ti ti-brand-linkedin" aria-hidden="true"></i></div>
-        <div>
-          <div class="contact-item-label">LinkedIn</div>
-          <div class="contact-item-val">shyam-hari-5389492b3</div>
+      </section>
+
+      <section class="section reveal" id="s-skills" aria-labelledby="skills-title">
+        <div class="sec-label">002 — Skills</div>
+        <h2 class="sec-title" id="skills-title">The <em>stack.</em></h2>
+        <div class="skills-cloud" role="list" aria-label="Technical skills">
+          <span class="skill-chip chip-ml" role="listitem">PyTorch</span>
+          <span class="skill-chip chip-ml" role="listitem">Scikit-learn</span>
+          <span class="skill-chip chip-ml" role="listitem">Stable-Baselines3</span>
+          <span class="skill-chip chip-ml" role="listitem">HuggingFace</span>
+          <span class="skill-chip chip-ml" role="listitem">PPO / RL</span>
+          <span class="skill-chip chip-ml" role="listitem">CNNs</span>
+          <span class="skill-chip chip-data" role="listitem">Pandas</span>
+          <span class="skill-chip chip-data" role="listitem">NumPy</span>
+          <span class="skill-chip chip-data" role="listitem">Feature Engineering</span>
+          <span class="skill-chip chip-data" role="listitem">EDA</span>
+          <span class="skill-chip chip-data" role="listitem">Time-Series</span>
+          <span class="skill-chip chip-data" role="listitem">SQL</span>
+          <span class="skill-chip chip-data" role="listitem">A/B Testing</span>
+          <span class="skill-chip chip-llm" role="listitem">Groq API</span>
+          <span class="skill-chip chip-llm" role="listitem">LLaMA 3</span>
+          <span class="skill-chip chip-llm" role="listitem">Prompt Engineering</span>
+          <span class="skill-chip chip-llm" role="listitem">Multi-Agent Orch.</span>
+          <span class="skill-chip chip-deploy" role="listitem">FastAPI</span>
+          <span class="skill-chip chip-deploy" role="listitem">Streamlit</span>
+          <span class="skill-chip chip-deploy" role="listitem">Vercel</span>
+          <span class="skill-chip chip-deploy" role="listitem">SQLAlchemy</span>
+          <span class="skill-chip chip-deploy" role="listitem">React 19</span>
+          <span class="skill-chip chip-lang" role="listitem">Python</span>
+          <span class="skill-chip chip-lang" role="listitem">JavaScript</span>
+          <span class="skill-chip chip-lang" role="listitem">Java</span>
+          <span class="skill-chip chip-lang" role="listitem">Git</span>
         </div>
-      </div>
-      <div class="contact-item">
-        <div class="contact-item-icon"><i class="ti ti-brand-github" aria-hidden="true"></i></div>
-        <div>
-          <div class="contact-item-label">GitHub</div>
-          <div class="contact-item-val">shyamhari1074</div>
+      </section>
+
+      <section class="section reveal" id="s-work" aria-labelledby="work-title">
+        <div class="sec-label">003 — Selected work</div>
+        <h2 class="sec-title" id="work-title">What I've <em>built.</em></h2>
+        <div class="proj-grid" role="list" aria-label="Projects">
+          <article class="proj-card" role="listitem">
+            <div class="proj-idx">PROJ — 001</div>
+            <h3 class="proj-name">LeafNetwork</h3>
+            <p class="proj-desc">Multi-agent AI platform for farmers. Vision, Climate and Satellite agents — real-time crop disease detection, live market signals, AI chat. Shipped independently to Vercel.</p>
+            <div class="proj-tags" aria-label="Technologies used">
+              <span class="proj-tag">React 19</span>
+              <span class="proj-tag">FastAPI</span>
+              <span class="proj-tag">PyTorch</span>
+              <span class="proj-tag">LLaMA 3</span>
+            </div>
+            <a class="proj-link" href="https://github.com/shyamhari1074/The_Leaf_Network" target="_blank" rel="noopener noreferrer">View on GitHub <i class="ti ti-arrow-up-right" aria-hidden="true"></i></a>
+          </article>
+          <article class="proj-card" role="listitem">
+            <div class="proj-idx">PROJ — 002</div>
+            <h3 class="proj-name">RL Financial Optimiser</h3>
+            <p class="proj-desc">PPO agent on financial time-series with custom reward functions and domain-specific state features. Outperformed baseline statistical hedging by ~80%.</p>
+            <div class="proj-tags" aria-label="Technologies used">
+              <span class="proj-tag">PPO</span>
+              <span class="proj-tag">Stable-Baselines3</span>
+              <span class="proj-tag">Gymnasium</span>
+            </div>
+          </article>
+          <article class="proj-card" role="listitem">
+            <div class="proj-idx">PROJ — 003</div>
+            <h3 class="proj-name">Segmentation Platform</h3>
+            <p class="proj-desc">K-Means clustering across 5 behavioural segments with Logistic Regression churn classifier. Live Streamlit inference dashboard for real-time predictions.</p>
+            <div class="proj-tags" aria-label="Technologies used">
+              <span class="proj-tag">Scikit-learn</span>
+              <span class="proj-tag">Streamlit</span>
+              <span class="proj-tag">Joblib</span>
+            </div>
+          </article>
+          <article class="proj-card" role="listitem">
+            <div class="proj-idx">PROJ — 004</div>
+            <h3 class="proj-name">Padik AI</h3>
+            <p class="proj-desc">Agentic NLP pipeline transforming raw YouTube transcripts into structured study notes and Q&A pairs via LLaMA 3.1. Zero manual processing post-deployment.</p>
+            <div class="proj-tags" aria-label="Technologies used">
+              <span class="proj-tag">LLaMA 3.1</span>
+              <span class="proj-tag">Groq API</span>
+              <span class="proj-tag">NLP</span>
+            </div>
+          </article>
+          <article class="proj-card" role="listitem">
+            <div class="proj-idx">PROJ — 005</div>
+            <h3 class="proj-name">E-commerce Analysis</h3>
+            <p class="proj-desc">EDA and Linear Regression on 2,000+ customer records. Surfaced $61.27/$38.59/$25.98 annual spend drivers per unit — coefficient-level business insight.</p>
+            <div class="proj-tags" aria-label="Technologies used">
+              <span class="proj-tag">Pandas</span>
+              <span class="proj-tag">Scikit-learn</span>
+              <span class="proj-tag">Seaborn</span>
+            </div>
+          </article>
+          <article class="proj-card" role="listitem">
+            <div class="proj-idx">PROJ — 006</div>
+            <h3 class="proj-name">Neuroevolution Agent</h3>
+            <p class="proj-desc">Neural game agent trained via genetic algorithms — gradient-free optimisation, fitness-based selection across generations for real-time decision-making.</p>
+            <div class="proj-tags" aria-label="Technologies used">
+              <span class="proj-tag">PyTorch</span>
+              <span class="proj-tag">NEAT</span>
+              <span class="proj-tag">Genetic Alg.</span>
+            </div>
+          </article>
         </div>
-      </div>
-    </div>
+      </section>
+
+      <section class="section reveal" id="s-exp" aria-labelledby="exp-title">
+        <div class="sec-label">004 — Experience</div>
+        <h2 class="sec-title" id="exp-title">Where I've <em>worked.</em></h2>
+        <div class="exp-list" role="list" aria-label="Work experience">
+          <article class="exp-row" role="listitem">
+            <div class="exp-meta">
+              <div class="exp-co">British Airways</div>
+              <div class="exp-date">Feb 2026</div>
+              <div class="exp-badge">Verified</div>
+            </div>
+            <div class="exp-content">
+              <div class="exp-role">Data Science · Forage</div>
+              <ul class="exp-bullets">
+                <li>Scraped and performed EDA on 1,000+ unstructured customer reviews — surfaced satisfaction drivers across key service dimensions</li>
+                <li>Engineered domain-specific features, trained booking-behaviour classifier, delivered results in executive-facing presentation</li>
+              </ul>
+            </div>
+          </article>
+          <article class="exp-row" role="listitem">
+            <div class="exp-meta">
+              <div class="exp-co">Commonwealth Bank</div>
+              <div class="exp-date">Feb 2025</div>
+              <div class="exp-badge">Verified</div>
+            </div>
+            <div class="exp-content">
+              <div class="exp-role">Intro to Data Science · Forage</div>
+              <ul class="exp-bullets">
+                <li>Designed end-to-end Python and SQL pipelines for ingestion, cleaning and transformation of large-scale structured financial datasets</li>
+                <li>Applied anonymisation to sensitive customer records; designed relational schemas for dashboard-ready analytical output</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="s-svc" aria-labelledby="svc-title">
+        <div class="sec-label">005 — Services</div>
+        <h2 class="sec-title" id="svc-title">What I can do <em>for you.</em></h2>
+        <div class="svc-grid" role="list" aria-label="Services offered">
+          <article class="svc-card" role="listitem">
+            <div class="svc-icon svc-icon-ml" aria-hidden="true"><i class="ti ti-brain" style="color:#a78bfa;font-size:18px"></i></div>
+            <h3 class="svc-name">ML model development</h3>
+            <p class="svc-desc">End-to-end pipelines — data prep, training, evaluation, serialised deployment-ready models. Classification, regression, clustering, reinforcement learning.</p>
+          </article>
+          <article class="svc-card" role="listitem">
+            <div class="svc-icon svc-icon-data" aria-hidden="true"><i class="ti ti-chart-bar" style="color:#67e8f9;font-size:18px"></i></div>
+            <h3 class="svc-name">Data analysis and dashboards</h3>
+            <p class="svc-desc">EDA, feature analysis, interactive Streamlit and Plotly dashboards. Stakeholder-ready insight from raw data.</p>
+          </article>
+          <article class="svc-card" role="listitem">
+            <div class="svc-icon svc-icon-llm" aria-hidden="true"><i class="ti ti-robot" style="color:#6ee7b7;font-size:18px"></i></div>
+            <h3 class="svc-name">LLM and AI pipelines</h3>
+            <p class="svc-desc">Prompt engineering, multi-agent orchestration, unstructured-to-structured pipelines using LLaMA 3 and Groq API.</p>
+          </article>
+          <article class="svc-card" role="listitem">
+            <div class="svc-icon svc-icon-full" aria-hidden="true"><i class="ti ti-rocket" style="color:#fcd34d;font-size:18px"></i></div>
+            <h3 class="svc-name">Full-stack AI apps</h3>
+            <p class="svc-desc">FastAPI backends, React frontends, Vercel deployments. Production-ready AI applications built and shipped independently.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="s-contact" aria-labelledby="contact-title">
+        <div class="sec-label">006 — Contact</div>
+        <div class="contact-block">
+          <div class="contact-info">
+            <h2 class="contact-headline" id="contact-title">Let's build<br><span>something real.</span></h2>
+            <p class="contact-sub">Open to internships, entry-level roles, and select freelance projects. India and remote.</p>
+          </div>
+          <div class="contact-items" role="list" aria-label="Contact methods">
+            <div class="contact-item" role="listitem">
+              <div class="contact-item-icon" aria-hidden="true"><i class="ti ti-mail"></i></div>
+              <div>
+                <div class="contact-item-label">Email</div>
+                <div class="contact-item-val"><a href="mailto:shyamhwrk@gmail.com">shyamhwrk@gmail.com</a></div>
+              </div>
+            </div>
+            <div class="contact-item" role="listitem">
+              <div class="contact-item-icon" aria-hidden="true"><i class="ti ti-brand-linkedin"></i></div>
+              <div>
+                <div class="contact-item-label">LinkedIn</div>
+                <div class="contact-item-val"><a href="https://linkedin.com/in/shyam-hari-5389492b3" target="_blank" rel="noopener noreferrer">shyam-hari-5389492b3</a></div>
+              </div>
+            </div>
+            <div class="contact-item" role="listitem">
+              <div class="contact-item-icon" aria-hidden="true"><i class="ti ti-brand-github"></i></div>
+              <div>
+                <div class="contact-item-label">GitHub</div>
+                <div class="contact-item-val"><a href="https://github.com/shyamhari1074" target="_blank" rel="noopener noreferrer">shyamhari1074</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer-bar" role="contentinfo">
+      <p class="footer-name">shyam hari © 2026</p>
+      <nav class="footer-social" aria-label="Social links">
+        <a href="https://github.com/shyamhari1074" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://linkedin.com/in/shyam-hari-5389492b3" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="mailto:shyamhwrk@gmail.com">Email</a>
+      </nav>
+    </footer>
   </div>
-</section>
-
-<footer class="footer-bar">
-  <span class="footer-name">shyam hari © 2026</span>
-  <div class="footer-social">
-    <a href="https://github.com/shyamhari1074">GitHub</a>
-    <a href="https://linkedin.com/in/shyam-hari-5389492b3">LinkedIn</a>
-    <a href="mailto:shyamhwrk@gmail.com">Email</a>
-  </div>
-</footer>
-
-</div>
-
-<script>
-const canvas = document.getElementById('starfield');
-const ctx = canvas.getContext('2d');
-const hero = canvas.parentElement;
-let stars = [];
-
-function initStars() {
-  canvas.width = hero.offsetWidth;
-  canvas.height = hero.offsetHeight;
-  stars = [];
-  for (let i = 0; i < 120; i++) {
-    stars.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.2 + 0.2,
-      a: Math.random(),
-      speed: Math.random() * 0.3 + 0.1,
-      drift: (Math.random() - 0.5) * 0.2
-    });
-  }
-}
-
-function drawStars() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  stars.forEach(s => {
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(167,139,250,${s.a * 0.7})`;
-    ctx.fill();
-    s.y -= s.speed;
-    s.x += s.drift;
-    s.a = 0.3 + Math.sin(Date.now() * 0.001 + s.x) * 0.3;
-    if (s.y < -2) { s.y = canvas.height + 2; s.x = Math.random() * canvas.width; }
-    if (s.x < 0) s.x = canvas.width;
-    if (s.x > canvas.width) s.x = 0;
-  });
-  requestAnimationFrame(drawStars);
-}
-
-initStars();
-drawStars();
-
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-</script>
+  <script src="script.js"></script>
+</body>
+</html>
