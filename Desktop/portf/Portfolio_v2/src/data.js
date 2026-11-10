@@ -87,6 +87,6 @@ export const skills = [
 export const journey = [
   { title: 'Vice Chairperson', place: 'CSI SB SJCET', note: 'Joined as a member, became event lead, then vice chairperson.', steps: ['Member', 'Event lead', 'Vice chairperson'] },
   { title: 'Curator', place: 'TEDxSJCET Palai 2026', note: 'Curator for the 2026 edition.' },
-  { title: 'B.Tech, Artificial Intelligence & Data Science', place: 'SJCET Palai', note: 'Graduating 2026.' },
+  { title: 'B.Tech, Artificial Intelligence & Data Science', place: 'SJCET Palai', note: 'Graduating 2027.' },
 ];
 export const virtual = 'Also completed virtual experience programs with British Airways (data science) and Commonwealth Bank (intro to data science) on Forage.';
